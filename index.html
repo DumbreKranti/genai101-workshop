@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Facts</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffcccb, #ffeb3b, #add8e6); /* Gradient background */
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333; /* Dark gray for the title */
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff6347, #ffa500); /* Gradient background */
+            color: white;
+            border: none;
+            border-radius: 25px; /* Rounded button */
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden; /* To contain the ripple effect */
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05); /* Slight scaling effect */
+        }
+
+        button:focus {
+            outline: none; /* Remove focus outline */
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        #factDisplay {
+            margin-top: 20px;
+            font-size: 24px; /* Larger font size for visibility */
+            color: #333; /* Dark gray for text */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth transition */
+            transform: translateY(20px); /* Initial position for animation */
+            display: inline-block; /* To allow padding and margin */
+            padding: 20px;
+            border-radius: 15px; /* Rounded corners for the card */
+            background-color: white; /* White background for the card */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            max-width: 400px; /* Max width for the card */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cat Facts</h1>
+        <button id="factButton">
+            🐱 Get a Cat Fact
+            <span class="ripple"></span>
+        </button>
+        <p id="factDisplay"></p>
+    </div>
+    <script>
+        const facts = [
+            { text: "Cats have five toes on their front paws, but only four toes on their back paws.", style: "font-weight: bold; color: #ff6347;" },
+            { text: "A group of cats is called a clowder.", style: "font-style: italic; color: #4682b4;" },
+            { text: "Cats can rotate their ears 180 degrees.", style: "text-decoration: underline; color: #32cd32;" },
+            { text: "The world's oldest cat lived to be 38 years old.", style: "font-size: 28px; color: #ffa500;" },
+            { text: "Cats sleep for about 12-16 hours a day, which is about two-thirds of their life.", style: "font-weight: bold; color: #8a2be2;" },
+            { text: "A cat's nose print is unique, much like a human fingerprint.", style: "font-style: italic; color: #dc143c;" },
+            { text: "Cats can make over 100 different sounds.", style: "text-decoration: underline; color: #00bfff;" },
+            { text: "The average cat can run up to 30 miles per hour.", style: "font-size: 28px; color: #ff4500;" },
+            { text: "Cats have a special collarbone that allows them to always land on their feet.", style: "font-weight: bold; color: #7fff00;" },
+            { text: "The largest breed of domestic cat is the Maine Coon.", style: "font-style: italic; color: #ff1493;" }
+        ];
+
+        document.getElementById('factButton').addEventListener('click', function(event) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const factDisplay = document.getElementById('factDisplay');
+            factDisplay.textContent = facts[randomIndex].text;
+            factDisplay.setAttribute("style", facts[randomIndex].style); // Apply creative style
+            factDisplay.style.opacity = 0; // Reset opacity for fade-in effect
+            factDisplay.style.transform = "translateY(20px)"; // Reset position for animation
+            setTimeout(() => {
+                factDisplay.style.opacity = 1; // Fade in the fact
+                factDisplay.style.transform = "translateY(0)"; // Move to original position
+            }, 100);
+        });
+    </script>
+</body>
+</html>
